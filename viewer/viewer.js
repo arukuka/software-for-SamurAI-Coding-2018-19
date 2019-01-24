@@ -127,7 +127,7 @@ function obtainLogoAspects(n) {
     img.logo = logos[n];
     img.number = n;
     img.onload = logoImageLoaded;
-    img.src = "logos/" + logos[n].source;
+    img.src = "/public/img/viewer/logos/" + logos[n].source;
   } else {
     logoAspectsObtained = true;
     drawCourseBody();
@@ -138,7 +138,7 @@ function obtainLogoAspects(n) {
 function buildSquare(x, y) {
   var sqr = document.createElement("img");
   squares[y].push(sqr);
-  sqr.src = "icons/" +
+  sqr.src = "/public/img/viewer/icons/" +
     squareIcons[y<0 || course.length <= y ? 0 :
 		course.squares[y*course.width + x]];
   sqr.style.width = unitSize + "px";
@@ -252,7 +252,7 @@ function drawLogos() {
 	    logo.style.top =
 	      topY(y) + (unitSize-logo.height)/2 + "px";
 	    logo.style.left = leftX(pos) + "px";
-	    logo.src = "logos/" + chosen.source;
+	    logo.src = "/public/img/viewer/logos/" + chosen.source;
 	    courseDiv.appendChild(logo);
 	    pos += chosen.width + sep;
 	  });
@@ -334,6 +334,8 @@ function drawCourseBody() {
   courseDiv.style.marginLeft =
     (zoomLevel >= 0 ? 0 :
      (document.getElementById("game-body").clientWidth - course.width * unitSize)/2) + "px";
+  // Add position setting
+  courseDiv.style.position = "relative";
   // Draw squares
   squares = [];
   for (var y = minY; y <= maxY; y++) {
