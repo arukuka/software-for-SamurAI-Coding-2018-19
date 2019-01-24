@@ -57,6 +57,30 @@ function loadFile(evt) {
   reader.readAsText(file);
 }
 
+function loadLog(raceLog) {
+  course = raceLog.course;
+  names = raceLog.names;
+  times = raceLog.finished;
+  stepLogs = raceLog.log;
+  numSteps = stepLogs.length;
+
+  document.getElementById("name0").innerHTML = names[0];
+  document.getElementById("name1").innerHTML = names[1];
+
+  minY = 0;
+  maxY = course.length-1;
+  // Determine the y-coordinate range
+  stepLogs.forEach(sl => {
+var y0 = sl.after[0] ? sl.after[0].y : 0;
+var y1 = sl.after[1] ? sl.after[1].y : 0;
+minY = Math.min(minY, y0, y1);
+maxY = Math.max(maxY, y0, y1);
+  });
+  currentStep = 0;
+  drawCourse();
+  startSound.play();
+}
+
 function bodyResized() {
   if (course) drawCourse();
 }
@@ -146,7 +170,7 @@ function zoom(delta) {
 }
 
 function addKbdControl() {
-  document.body.addEventListener('keydown', function(event) {
+  document.getElementById("game-body").addEventListener('keydown', function(event) {
     if (courseDiv != undefined) {
       var button = 0;
       switch (event.key) {
@@ -269,7 +293,7 @@ function drawSideBars() {
     img.width = sideBarWidth * chosen.width * unitSize;
     img.style.bottom = 0.1 * unitSize + "px";
     img.style.left = pos * unitSize + "px";
-    img.src = "logos/" + chosen.source;
+    img.src = "/public/img/viewer/logos/" + chosen.source;
     sideBar.appendChild(img);
     pos += sideBarWidth * chosen.width + sep;
   });
@@ -309,7 +333,7 @@ function drawCourseBody() {
   // Add margin when needed
   courseDiv.style.marginLeft =
     (zoomLevel >= 0 ? 0 :
-     (document.body.clientWidth - course.width * unitSize)/2) + "px";
+     (document.getElementById("game-body").clientWidth - course.width * unitSize)/2) + "px";
   // Draw squares
   squares = [];
   for (var y = minY; y <= maxY; y++) {
@@ -415,7 +439,7 @@ function placePlayerIcon(x, y, which, dx, dy, progress, result) {
   const icon = playerIcons[which];
   icon.style.top = topY(y+progress*dy) + playerIconMargin*unitSize + "px";
   icon.style.left = leftX(x+progress*dx) + playerIconMargin*unitSize + "px";
-  icon.src = "icons/" +
+  icon.src = "/public/img/viewer/icons/" +
     (result == "normal" || result == "finished" ?
      playerIconSource : shadedPlayerIconSource)[which];
   icon.style.zIndex = 3;
@@ -698,7 +722,7 @@ function setDefaultSpeed() {
   setPlaybackSpeed(0);
 }
 
-const soundLocation = "sound/";
+const soundLocation = "/public/audio/viewer/sound/";
 
 function loadAudio(src, volume, loop) {
   const audio = new Audio();

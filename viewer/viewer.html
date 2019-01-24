@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>SamurAI Jockey 2018 Race Viewer</title>
-    <script src="viewer.js"></script>
-    <link rel="stylesheet" type="text/css" href="viewer.css">
-  </head>
-  <body onresize="bodyResized()">
+{{define "viewer"}}
+  <script src="/public/js/viewer.js"></script>
+  <link rel="stylesheet" type="text/css" href="/public/css/viewer.css">
+  <div id="game-body" onresize="bodyResized()">
     <div id="buttons">
-      <button id="load" onclick="document.getElementById('fileInput').click();"
-	      title="Load Log File">
-	Load</button>
-      <input type="file" style="display:none" id="fileInput"
-	     onchange="loadFile(event)">
       <button id="rewind" onclick="rewind(event)" title="Rewind">
 	&lt;&lt;</button>
       <button id="back" onclick="stepBackward(event)" title="Step Backward">
@@ -31,9 +21,9 @@
 	/min
       </span>
       &ensp;
-      <img id="zoomIn" width="20px" src="icons/zoom_in.png" onclick="zoom(+1)"
+      <img id="zoomIn" width="20px" src="/public/img/viewer/icons/zoom_in.png" onclick="zoom(+1)"
 	   title="zoom in">
-      <img id="zoomOut" width="20" src="icons/zoom_out.png" onclick="zoom(-1)"
+      <img id="zoomOut" width="20" src="/public/img/viewer/icons/zoom_out.png" onclick="zoom(-1)"
 	   title="zoom out">
       &ensp;
       <span class="textInButtons">
@@ -46,12 +36,9 @@
         <option value="+3">+3</option>
         <option value="follower">follower</option>
       </select>
-      <button id="help" onclick="location.href='help-jp.html'"
-	      title="Show Manual">
-	Help</button>
     </div>
     <div id="raceState" style='margin-top:5px'>
-      <img src='icons/clock.png' alt='clock: ' width='20px' height='20px'
+      <img src='/public/img/viewer/icons/clock.png' alt='clock: ' width='20px' height='20px'
 	   style='margin-bottom:-4pt'/>
       <span id='stepNumber' style="color: black" title="Step Number">0</span>
       &ensp;
@@ -70,5 +57,12 @@
     <script>
       addKbdControl();
     </script>
-  </body>
-</html>
+  </div>
+  <script type="text/javascript">
+    $(function () {
+      var gameLogRaw = {{.Result.GameLog}};
+      var gameLogJSON = JSON.parse(gameLogRaw);
+      loadLog(gameLogJSON);
+    });
+  </script>
+{{define "viewer"}}
