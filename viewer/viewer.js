@@ -57,7 +57,9 @@ function loadFile(evt) {
   reader.readAsText(file);
 }
 
-function loadLog(raceLog) {
+function loadLog(newLog) {
+	raceLog = newLog;
+
   course = raceLog.course;
   names = raceLog.names;
   times = raceLog.finished;
