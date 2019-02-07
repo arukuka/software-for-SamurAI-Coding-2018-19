@@ -15,7 +15,7 @@ var courseDiv;
 var unitSize;
 var trajectory;
 var viewOption = "ahead";
-var zoomLevel = 0;
+var zoomLevel = -8;
 
 const raceLogFileType = 'race log';
 
